@@ -8,3 +8,4 @@ export async function signInUser() {
 export async function signOutUser() {
     return signOut()
 }
+

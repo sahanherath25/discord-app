@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Github from "next-auth/providers/github";
 import {PrismaAdapter} from "@auth/prisma-adapter";
-import {db} from "@/db"
+// import {db} from "@/db"
 
 
 const GITHUB_CLIENT_ID=process.env.GITHUB_CLIENT_ID;
@@ -14,12 +14,11 @@ console.log("",GITHUB_CLIENT_ID)
 console.log("",AUTH_SECRET)
 
 if(!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET){
-    throw new Error("MIssing github oauth credentials")
+    throw new Error("MIssuing github oauth credentials")
 }
 
 //Returning a Object TODO
  const handlers=NextAuth({
-    adapter:PrismaAdapter(db),
     providers:[
         Github({
             clientId:GITHUB_CLIENT_ID,
