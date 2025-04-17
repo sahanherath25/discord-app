@@ -4,7 +4,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import {connectDB, verifyUserExists} from "@/app/lib/helpers";
+import {connectDB} from "@/app/lib/helpers";
 import prisma from "../../../../../prisma";
 
 // const GITHUB_CLIENT_ID=process.env.GITHUB_CLIENT_ID;
@@ -24,16 +24,7 @@ import prisma from "../../../../../prisma";
 export const authOptions = {
 
     providers: [
-        GithubProvider({
-            clientId:process.env.GITHUB_CLIENT_ID ,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            authorization:{
-                params:{
-                    scope: 'read:user user:email',
-                }
-            }
-
-        }),
+        GithubProvider({clientId:process.env.GITHUB_CLIENT_ID , clientSecret: process.env.GITHUB_CLIENT_SECRET}),
         GoogleProvider({clientId: process.env.GOOGLE_CLIENT_ID, clientSecret:process.env.GOOGLE_CLIENT_SECRET }),
         CredentialsProvider({
             name: "credentials",
@@ -70,45 +61,14 @@ export const authOptions = {
     ],
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
-        async jwt({ token, user }) {
-            // Runs only on first login
-            if (user) {
-                token.id = user.id; // Use DB ID
-            }
-            return token;
-        },
-        async session({session, token}) {
-            // if (session && user) {
-            //     session.user.id = user.id
-            // }
-
-            if (session && token) {
-                session.user.id = token.sub
+        async session({session, user}) {
+            if (session && user) {
+                session.user.id = user.id
             }
             return session;
         },
-        async signIn({account,user,profile}) {
 
-            // Check if user
-            if(account?.provider==="github"|| account?.provider==="google"){
-                const newUser=await verifyUserExists(user)
 
-                if(newUser !==null){
-                    user.id=newUser?.id;
-
-                    if(profile && profile.sub){
-                        profile.sub=newUser?.id;
-                        console.log("PROFILE SUB", profile.sub)
-                    }
-                }
-            }
-            // TODO SignIn expect boolean to return
-            return true
-
-        },
-        async redirect(){
-            return "/"
-        }
     }
 }
 const handler = NextAuth(authOptions)
