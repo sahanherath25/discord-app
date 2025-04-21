@@ -57,7 +57,7 @@ export const createPost = async (slug,formState, formData) => {
     if (!session || !session.user) {
 
         return {
-            ...currentState,
+            ...currentFormState,
             errors: {
                 _form: "You must Login to the System to create topics"
             }
@@ -77,6 +77,15 @@ export const createPost = async (slug,formState, formData) => {
     }
 
     console.log("WHERE ISTHE OGGY",session.user)
+
+    const data={
+        title:result.data.title,
+        content:result.data.content,
+        userId:session.user.id,
+        topicId:topic.id
+    }
+
+    console.log("DATA TO SUBMIT IN DB ",data)
 
 
     try{

@@ -13,6 +13,7 @@ function PostCreateForm({formTitle = "Create a Post",slug}) {
         }
     })
 
+
     // console.log("FORM STAtE Data  ", slug)
 
 

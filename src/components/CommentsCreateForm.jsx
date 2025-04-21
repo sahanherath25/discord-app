@@ -1,22 +1,21 @@
 "use client"
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Box, Button, TextField, Typography} from "@mui/material";
 import * as actions from "@/app/actions/index";
 import FormButton from "@/components/common/FormButton";
 import  {useActionState} from 'react';// Changed from useActionState
 
 function CommentsCreateForm({ postId, parentId, formTitle = "Create Comment", startOpen = false }) {
+
     const [open, setOpen] = useState(startOpen);
     const formRef = React.useRef(null);
 
     // Using useFormState instead of useActionState (more stable in Next.js)
-    const [formState, action] = useActionState(
-        actions.createComment.bind(null, { postId, parentId }),
-        { errors: {} }
+    const [formState, action] = useActionState(actions.createComment.bind(null, { postId, parentId }), { errors: {} }
     );
 
     // Reset form on successful submission
-    React.useEffect(() => {
+    useEffect(() => {
         if (formState.success) {
             formRef.current?.reset();
             if (!startOpen) setOpen(false);
@@ -67,13 +66,11 @@ function CommentsCreateForm({ postId, parentId, formTitle = "Create Comment", st
                     error={!!formState.errors?.content}
                     helperText={formState.errors?.content?.join(", ")}
                 />
-
                 {formState.errors?._form && (
                     <Alert severity="error">
                         {formState.errors._form.join(", ")}
                     </Alert>
                 )}
-
                 <Box sx={{ display: "flex", gap: 2 }}>
                     <FormButton color="primary">
                         Submit

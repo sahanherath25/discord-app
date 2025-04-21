@@ -8,6 +8,8 @@ import TopicCreateForm from "@/components/TopicCreateForm";
 import CloseIcon from "@mui/icons-material/Close";
 import PostList from "@/components/PostList";
 import {fetchPostBySlug} from "@/app/lib/queries/posts";
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 
 async function TopicsPage({params, searchParams}) {
 
@@ -18,6 +20,10 @@ async function TopicsPage({params, searchParams}) {
     if (slug.includes("%")) {
         slug = decodeURIComponent(slug);
     }
+
+    const session=await getServerSession(authOptions)
+
+    console.log("user Logged in is ",session)
 
     return (
         <Box className={"grid grid-cols-4 mx-6 my-4"} component={"section"}

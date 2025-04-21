@@ -1,11 +1,15 @@
 import React from 'react';
 
-function TopcsPage(props) {
- return (
-  <div>
-      <h2> All Topcis Page</h2>
+async function TopicsPage({params, searchParams}) {
 
-  </div>
- );}
+    return (
+        <div>
+            <h2> All Topics Page</h2>
 
-export default TopcsPage;
+        </div>
+    );
+}
+
+export default TopicsPage;
+
+

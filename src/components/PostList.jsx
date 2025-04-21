@@ -18,7 +18,7 @@ export async  function PostList({fetchData}) {
     return (
         <div>
             {posts.map((post, index) => (
-                <div key={post.id} className="border rounded p-2">
+                <div key={post.id} className="border rounded p-2 w-[80%] my-2">
                     <Link href={`/topics/${post.topic.slug}/posts/${post.id}`}>
                         <h3 className="text-lg font-bold">{post.title}</h3>
                         <div className="flex flex-row gap-8">

@@ -48,8 +48,7 @@ export const verifyUserExists = async (user) => {
         console.log("User Already Exists",userFound)
 
         if (userFound) {
-            return null;
-
+            return userFound;
         } else {
             //     User Not Found
             //     TODO Create a New User and Save in DB

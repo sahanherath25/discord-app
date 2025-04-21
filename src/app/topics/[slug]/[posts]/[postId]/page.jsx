@@ -1,10 +1,11 @@
-import React from 'react';
-import PostList from "@/components/PostList";
+import React, {Suspense} from 'react';
 import PostShow from "@/components/PostShow";
 import CommentsCreateForm from "@/components/CommentsCreateForm";
 import CommentList from "@/components/CommentList";
 import {fetchCommentsByPostId} from "@/app/lib/queries/comments";
-import {Box, Container, Typography} from "@mui/material";
+import {Box, Container, LinearProgress, Typography} from "@mui/material";
+import PostShowLoader from "@/components/PostShowLoader";
+
 
 async function PostShowPage({params}) {
 
@@ -13,11 +14,11 @@ async function PostShowPage({params}) {
     console.log("Params ", id)
 
     return (
-
         <Box sx={{display: "grid", gridTemplateColumns: "1fr"}}>
 
-            <h2>You are in Detail Page</h2>
-            <PostShow postId={id}/>
+            <Suspense fallback={<PostShowLoader/>}>
+                <PostShow postId={id}/>
+            </Suspense>
 
             <Box>
                 <Typography variant="h6" fontWeight="medium" gutterBottom>
@@ -26,10 +27,10 @@ async function PostShowPage({params}) {
                 <CommentsCreateForm postId={id}/>
                 <CommentList fetchData={() => fetchCommentsByPostId(id)}/>
             </Box>
-
         </Box>
-
     );
 }
+
+
 
 export default PostShowPage;

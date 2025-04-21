@@ -1,12 +1,14 @@
 "use client"
 
-import React from 'react';
-import { Box, InputBase, Paper, Typography,Button,Container} from "@mui/material";
+import React, {Suspense} from 'react';
+import {Box, InputBase, Paper, Typography, Button, Container, LinearProgress} from "@mui/material";
 import Image from 'next/image';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Link from"next/link"
 import {signIn, signOut, useSession} from "next-auth/react";
-import * as action from"@/app/actions/index"
+import * as actions from"@/app/actions/index"
+import SearchInput from "@/components/SearchInput";
+import logoGif from "../../public/assets/gifs/logo.gif"
 
 
 function HeaderAuth() {
@@ -31,31 +33,35 @@ function HeaderAuth() {
                 >
                     {/* Logo */}
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <Image src="/logo.png" alt="Logo" width={40} height={40} />
+                        <Image src={logoGif} alt="Logo" width={50} height={50} />
                         <Typography variant="h6" component="span">MyBrand</Typography>
                     </Box>
 
                     {/* Search Bar */}
                     <Box
                         component="form"
-                        action="/search"
-                        method="GET"
+                        action={actions.search}
                         sx={{
                             flex: 1,
                             maxWidth: 400,
                             display: "flex",
                             alignItems: "center",
-                            backgroundColor: "#f5f5f5",
+                            backgroundColor: "#fff",
                             px: 2,
                             borderRadius: 10,
                         }}
                     >
-                        <InputBase
-                            name="q"
-                            placeholder="Search…"
-                            fullWidth
-                            inputProps={{ "aria-label": "search" }}
-                        />
+                        {/*<InputBase*/}
+                        {/*    name=""*/}
+                        {/*    placeholder="Search…"*/}
+                        {/*    fullWidth*/}
+                        {/*    inputProps={{ "aria-label": "search" }}*/}
+                        {/*/>*/}
+                        <Suspense fallback={<LinearProgress/>}>
+                            <SearchInput />
+                        </Suspense>
+
+                        {/*<Button type={"submit"}>OK</Button>*/}
 
 
                     </Box>

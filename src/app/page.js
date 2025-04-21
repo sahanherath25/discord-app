@@ -5,6 +5,8 @@ import Link from "next/link";
 import CloseIcon from '@mui/icons-material/Close';
 import TopicsList from "@/components/TopicsList";
 import Divider from '@mui/material/Divider';
+import PostList from "@/components/PostList";
+import {fetchTopPost} from "@/app/lib/queries/posts";
 
 export default async function Home({searchParams }) {
 
@@ -17,11 +19,13 @@ export default async function Home({searchParams }) {
 
 
             <div className={" col-span-3"}>
-                <Typography> My Recent Topics</Typography>
+                <Typography variant={"h2"}> My Recent Topics</Typography>
+                <PostList fetchData={fetchTopPost}/>
             </div>
 
             {showForm && (
                 <Box
+                    className={"col-span-1"}
                     sx={{
                         position: "fixed",
                         inset: 0,

@@ -71,9 +71,13 @@ export const authOptions = {
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
         async jwt({ token, user }) {
+
+            console.log("TOKEN ",token)
+            console.log("USER I N JWT  ",user)
             // Runs only on first login
             if (user) {
                 token.id = user.id; // Use DB ID
+                token.sub = user.id; // Use DB ID
             }
             return token;
         },
@@ -83,7 +87,9 @@ export const authOptions = {
             // }
 
             if (session && token) {
-                session.user.id = token.sub
+                session.user.id = token.id
+
+                console.log("Session ID ",session.user.id)
             }
             return session;
         },
@@ -93,11 +99,13 @@ export const authOptions = {
             if(account?.provider==="github"|| account?.provider==="google"){
                 const newUser=await verifyUserExists(user)
 
+                console.log("Before verifyUserExists - user.id:", user?.id);
+
                 if(newUser !==null){
                     user.id=newUser?.id;
 
                     if(profile && profile.sub){
-                        profile.sub=newUser?.id;
+                        profile.sub=newUser.id;
                         console.log("PROFILE SUB", profile.sub)
                     }
                 }

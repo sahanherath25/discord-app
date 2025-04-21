@@ -14,6 +14,7 @@ export {createComment} from './create-comment';
 export {createPost} from './create-post';
 export {getAllTopics} from './get-all-topics';
 export {getAllPosts} from './get-all-posts';
+export {search} from './search';
 
 
 // export  async function createComment() {

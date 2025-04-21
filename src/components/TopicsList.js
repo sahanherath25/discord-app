@@ -8,7 +8,7 @@ async function TopicsList() {
 
     const data=await getAllTopics();
 
-    console.log("DATAT TOPICS ",data)
+    // console.log("DATAT TOPICS ",data)
 
     return (
         <div className="topics-list mt-4" style={{display: 'flex', flexWrap: 'wrap', gap: '12px'}}>

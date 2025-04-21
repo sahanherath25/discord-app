@@ -3,6 +3,7 @@ import {z} from "zod";
 import {getServerSession} from "next-auth";
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import prisma from "../../../prisma";
+import {revalidatePath} from "next/cache";
 
 const createCommentSchema = z.object({
     content: z.string().min(3),
@@ -10,7 +11,6 @@ const createCommentSchema = z.object({
 
 export async function createComment({postId, parentId}, formState, formData) {
     console.log("Creating comment...")
-
 
     const comment = formData.get("content");
 
@@ -87,28 +87,32 @@ export async function createComment({postId, parentId}, formState, formData) {
 
     // const  topic=await prisma.topic.findFirst({where:{slug}})
 
-    // const topic = await prisma.topic.findFirst({
-    //     where: { posts: { some: { id: postId } } },
-    // });
+    const topic = await prisma.topic.findFirst({
+        where: { posts: { some: { id: postId } } },
+    });
+
+    console.log("Topic Found")
 
 
-    // if (!topic) {
-    //     return {errors: {_form: "Cannot find the Topic"}}
-    // }
+    if (!topic) {
+        return {errors: {_form: "Cannot find the Topic"}}
+    }
     //
     //
-    // if (!topic) {
-    //     return {
-    //         errors: {
-    //             _form: ["Failed to revalidate topic"],
-    //         },
-    //     };
-    // }
+    if (!topic) {
+        return {
+            errors: {
+                _form: ["Failed to revalidate topic"],
+            },
+        };
+    }
 
 
 
 
 //  TODO Revalidate Post Show Page
+
+    revalidatePath(`/topics/${topic.slug}/${postId}`)
 
     return {
         errors: {},

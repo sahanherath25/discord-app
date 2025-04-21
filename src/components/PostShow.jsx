@@ -3,6 +3,12 @@ import {notFound} from "next/navigation";
 
 export  async function PostShow({postId}) {
 
+    // await new Promise((resolve, reject)=>{
+    //     setTimeout(()=>{
+    //         resolve(true)
+    //     },20000)
+    // })
+
     const post=await prisma.post.findFirst({where:{id:postId}})
 
     console.log("POSTS IN DETAIL PAGE FOUND ",post)
@@ -10,7 +16,6 @@ export  async function PostShow({postId}) {
     if(!post){
         notFound()
     }
-
 
     return (
         <div className="m-4">
